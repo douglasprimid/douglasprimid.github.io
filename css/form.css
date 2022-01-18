@@ -79,7 +79,7 @@
   position: relative;
 }
 
-.formacao-extra h3::before {
+.cursos h3::before {
   content: "";
   display: block;
   width: 1.5rem;
@@ -87,14 +87,18 @@
   position: absolute;
   left: -2.25rem;
   top: -0.25rem;
-}
-
-.cursos h3::before {
-  background: url(/img/cursos.svg) no-repeat center center;
+  background: url(../img/svg/cursos.svg) no-repeat;
 }
 
 .idiomas h3::before {
-  background: url(/img/idiomas.svg) no-repeat center center;
+  content: "";
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  left: -2.25rem;
+  top: -0.25rem;
+  background: url(../img/svg/idiomas.svg) no-repeat;
 }
 
 .formacao-extra li {

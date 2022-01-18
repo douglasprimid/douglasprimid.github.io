@@ -13,7 +13,7 @@
 }
 
 .introducao h1 {
-  font-family: "Maison Neue Book", Helvetica, Arial, Sans-Serif, sans-serif;
+  font-family: "Fira sans", Helvetica, Arial, Sans-Serif, sans-serif;
   font-weight: 600;
   font-style: normal;
   font-size: 4.5rem;
@@ -38,7 +38,7 @@
   width: 8.125rem;
   height: 6.25rem;
   position: absolute;
-  background: url("../img/detalhe.svg") no-repeat center;
+  background: url("../img/svg/detalhe.svg") no-repeat center;
   z-index: -1;
   left: -2.5rem;
   top: -0.9375rem;
