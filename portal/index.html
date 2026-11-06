@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Cliente | Advestor Real Estate Solutions</title>
+  
+  <!-- Google Fonts: Open Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif'],
+          },
+          colors: {
+            advestor: {
+              petroleum: '#13495C',
+              'petroleum-dark': '#0E3645',
+              'petroleum-light': '#1D6780',
+              accent: '#B5652B',
+              'accent-hover': '#9B5422',
+              'accent-light': '#FFF5EE',
+              bg: '#F8FAFC',
+              card: '#FFFFFF'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Arquivo CSS Único -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 antialiased selection:bg-[#B5652B] selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- 1. CABEÇALHO ADVESTOR                                                     -->
+  <!-- ========================================================================= -->
+
+  <!-- Faixa Superior Azul Petróleo -->
+  <header class="w-full bg-[#13495C] text-white text-xs py-2 px-4 sm:px-8 border-b border-[#0E3645] relative z-40">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <!-- Contatos e Endereço -->
+      <div class="flex items-center flex-wrap justify-center sm:justify-start gap-4 text-slate-200">
+        <a href="mailto:marketing@advestor.com.br" class="flex items-center gap-1.5 hover:text-white transition">
+          <svg class="w-3.5 h-3.5 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          marketing@advestor.com.br
+        </a>
+        <span class="hidden md:inline text-slate-400">•</span>
+        <span class="flex items-center gap-1.5 text-slate-300">
+          <svg class="w-3.5 h-3.5 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Av. Rio Branco, 89 - Centro / RJ
+        </span>
+      </div>
+
+      <!-- Usuário Logado e Sininho de Notificações -->
+      <div class="flex items-center gap-5">
+        <!-- Sininho de Notificações -->
+        <div class="relative">
+          <button id="notif-btn" onclick="toggleNotifications()" class="relative p-1.5 rounded-full hover:bg-[#1D6780] transition text-white focus:outline-none" title="Notificações">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+            </svg>
+            <span id="notif-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-[#13495C]">2</span>
+          </button>
+
+          <!-- Dropdown do Sininho -->
+          <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 z-50 overflow-hidden transform transition-all duration-200">
+            <div class="p-3.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-sm text-[#13495C]">Notificações</span>
+                <span id="notif-count-text" class="text-xs bg-orange-100 text-[#B5652B] font-semibold px-2 py-0.5 rounded-full">2 novas</span>
+              </div>
+              <button onclick="markAllNotificationsAsRead()" class="text-xs text-slate-500 hover:text-[#B5652B] font-medium transition">
+                Marcar todas como lidas
+              </button>
+            </div>
+            <div id="notif-list" class="max-h-80 overflow-y-auto divide-y divide-slate-100 text-xs">
+              <!-- Renderizado via JavaScript -->
+            </div>
+            <div class="p-2.5 bg-slate-50 text-center border-t border-slate-100">
+              <span class="text-[11px] text-slate-400">Atualizações em tempo real da Advestor</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Perfil Logado -->
+        <div class="flex items-center gap-2 text-slate-200">
+          <svg class="w-4 h-4 text-cyan-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+          <span>Olá, <strong class="text-white font-semibold">João Exemplo</strong></span>
+          <span class="text-slate-400">|</span>
+          <button onclick="showToast('Sessão encerrada com sucesso.')" class="hover:text-cyan-300 transition text-slate-300"><a href="login.php">Sair</a></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Barra Principal Branca com Logo e Menu Institucional -->
+  <nav class="w-full bg-white border-b border-slate-200 shadow-sm sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between">
+      <!-- Logo Advestor -->
+      <a href="#" onclick="showListScreen(); return false;" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-[#13495C] to-[#0E3645] text-[#B5652B] shadow-sm">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C8 2 4 4.5 3 8c-1 3.5.5 7 2 9.5C6.5 19.5 9 22 12 22s5.5-2.5 7-4.5c1.5-2.5 3-6 2-9.5-1-3.5-5-6-9-6zm0 2c3.2 0 6.4 2 7.2 4.8.8 2.8-.4 5.6-1.6 7.6-1.2 2-3.3 3.6-5.6 3.6s-4.4-1.6-5.6-3.6c-1.2-2-2.4-4.8-1.6-7.6.8-2.8 4-4.8 7.2-4.8zm-3 7a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm-3 4c-1.5 0-2.5 1-2.5 1s1 1 2.5 1 2.5-1 2.5-1-1-1-2.5-1z"/>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl font-bold tracking-tight text-[#13495C] flex items-center gap-1 leading-none">
+            Advestor
+          </span>
+          <span class="text-[9px] uppercase tracking-widest text-[#B5652B] font-semibold mt-0.5">
+            Real Estate Solutions
+          </span>
+        </div>
+      </a>
+
+      <!-- Menu Principal (Desktop) -->
+      <div class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600">
+        <a href="#" class="text-[#13495C] font-semibold border-b-2 border-[#13495C] pb-0.5">Painel do Cliente</a>
+        <a href="#" class="hover:text-[#13495C] transition">Soluções</a>
+        <a href="#" class="hover:text-[#13495C] transition">Projetos</a>
+        <a href="#" class="hover:text-[#13495C] transition">Contato</a>
+        <a href="#" class="hover:text-[#13495C] transition">Diagnóstico</a>
+      </div>
+
+      <!-- Atendimento e WhatsApp -->
+      <div class="flex items-center gap-3">
+        <a href="https://wa.me/5521999886160?text=Ol%C3%A1%20Advestor%2C%20sou%20o%20cliente%20Jo%C3%A3o%20Exemplo%20e%20gostaria%20de%20falar%20com%20meu%20assessor." 
+           target="_blank" 
+           class="flex items-center gap-3 group text-right hover:opacity-95 transition">
+          <div class="hidden sm:block">
+            <span class="block text-[11px] text-slate-500 uppercase tracking-wider font-semibold">Ligue Agora</span>
+            <span class="block text-sm font-bold text-[#13495C]">21 99988-6160</span>
+          </div>
+          <div class="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- CONTEÚDO PRINCIPAL (SPA)                                                  -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6">
+
+    <!-- TELA 1: LISTA DE IMÓVEIS (MEUS IMÓVEIS) -->
+    <div id="screen-list" class="space-y-6">
+      
+      <!-- Resumo das Atividades -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-bold text-[#13495C]">Meus Imóveis</h1>
+          <p class="text-xs text-slate-500">Acompanhamento em tempo real da assessoria de compra na Zona Sul</p>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-3 sm:gap-6 text-sm">
+          <div class="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-lg border border-slate-100">
+            <span class="text-slate-500 font-medium text-xs sm:text-sm">Imóveis Analisados:</span>
+            <span id="metric-analyzed" class="font-bold text-lg text-[#13495C]">12</span>
+          </div>
+          <div class="flex items-center gap-2 bg-slate-50 px-3.5 py-2 rounded-lg border border-slate-100">
+            <span class="text-slate-500 font-medium text-xs sm:text-sm">Visitas Realizadas:</span>
+            <span id="metric-visits" class="font-bold text-lg text-[#13495C]">4</span>
+          </div>
+          <div class="flex items-center gap-2 bg-orange-50 px-3.5 py-2 rounded-lg border border-orange-200">
+            <span class="text-[#B5652B] font-medium text-xs sm:text-sm">Propostas em Andamento:</span>
+            <span id="metric-proposals" class="font-bold text-lg text-[#B5652B]">2</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layout em Colunas: Sidebar + Lista de Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+        
+        <!-- BARRA LATERAL ESQUERDA -->
+        <aside class="lg:col-span-1 space-y-4">
+          
+          <button onclick="openModal('modal-recommend')" class="w-full bg-[#B5652B] hover:bg-[#9B5422] text-white font-semibold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Indicar um imóvel
+          </button>
+
+          <!-- Card Meu Perfil de Busca -->
+          <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm text-xs space-y-2.5">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+              <span class="font-bold text-slate-800 text-sm">Meu perfil de busca</span>
+              <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold">Ativo</span>
+            </div>
+            <div>
+              <span class="font-semibold text-slate-700 block">Bairros:</span>
+              <span id="profile-neighborhoods" class="text-slate-600">Flamengo, Botafogo, Copacabana, Laranjeiras, Catete</span>
+            </div>
+            <div>
+              <span class="font-semibold text-slate-700 block">Faixa de preço:</span>
+              <span id="profile-price" class="text-slate-600">R$ 350k – 900k</span>
+            </div>
+            <div>
+              <span class="font-semibold text-slate-700 block">Metragem e Quartos:</span>
+              <span id="profile-area" class="text-slate-600">25 a 90 m² · 1 a 2 quartos</span>
+            </div>
+            <div class="pt-1">
+              <button onclick="showToast('Para alterar seus critérios de busca, envie uma mensagem ao seu assessor no WhatsApp.')" class="text-[#13495C] font-semibold hover:underline text-[11px]">
+                Solicitar alteração de perfil →
+              </button>
+            </div>
+          </div>
+
+          <!-- Botão Minha Agenda -->
+          <button onclick="openModal('modal-calendar')" class="w-full bg-white hover:bg-slate-50 border-2 border-[#B5652B] text-[#B5652B] font-semibold py-2.5 px-4 rounded-xl shadow-sm transition flex items-center justify-between text-sm group">
+            <span class="group-hover:translate-x-0.5 transition-transform font-bold">Minha agenda</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[11px] bg-orange-100 text-[#B5652B] px-2 py-0.5 rounded-full font-bold">2 eventos</span>
+              <svg class="w-5 h-5 text-[#B5652B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+          </button>
+
+          <!-- Filtros por Etapa -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="p-3 bg-slate-50 border-b border-slate-100 font-bold text-xs text-slate-600 uppercase tracking-wider">
+              Filtrar por etapa
+            </div>
+            <div class="divide-y divide-slate-100 text-xs" id="filter-buttons-container">
+              <!-- Renderizado via JavaScript -->
+            </div>
+          </div>
+        </aside>
+
+        <!-- LISTA DE CARDS DE IMÓVEIS -->
+        <section class="lg:col-span-3 space-y-3.5" id="property-cards-container">
+          <!-- Gerados dinamicamente via JS -->
+        </section>
+
+      </div>
+    </div>
+
+    <!-- TELA 2: DETALHE DO IMÓVEL -->
+    <div id="screen-detail" class="hidden space-y-6">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200">
+        <div>
+          <button onclick="showListScreen()" class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#13495C] hover:text-[#B5652B] mb-1.5 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Voltar para meus imóveis
+          </button>
+          <div class="flex items-center flex-wrap gap-3">
+            <h1 id="detail-title" class="text-xl sm:text-2xl font-bold text-slate-900">
+              Flamengo · Rua Marquês de Abrantes · 26 m²
+            </h1>
+            <span id="detail-status-badge" class="px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider text-white bg-[#B5652B]">
+              AGUARDANDO SUA DECISÃO
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-500">Código Advestor: <strong id="detail-code" class="text-slate-800">ADV-FLA26</strong></span>
+        </div>
+      </div>
+
+      <!-- Grid Principal: Galeria (~60%) e Detalhes (~40%) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- COLUNA ESQUERDA: GALERIA -->
+        <div class="lg:col-span-7 space-y-3">
+          
+          <div class="relative w-full aspect-[4/3] bg-slate-900 rounded-2xl overflow-hidden shadow-md group cursor-pointer" onclick="openLightbox()">
+            <img id="detail-main-photo" src="" alt="Foto do imóvel" class="w-full h-full object-cover transition-opacity duration-300">
+            
+            <div class="absolute top-4 right-4 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20">
+              <span id="gallery-counter">1 / 8</span>
+            </div>
+
+            <div class="absolute top-4 left-4 bg-black/60 hover:bg-black/80 backdrop-blur-sm text-white p-2 rounded-full border border-white/20 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+            </div>
+
+            <button onclick="event.stopPropagation(); prevPhoto();" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button onclick="event.stopPropagation(); nextPhoto();" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <div id="detail-thumbnails" class="grid grid-cols-5 sm:grid-cols-6 gap-2">
+            <!-- Miniaturas via JavaScript -->
+          </div>
+
+          <div class="bg-slate-100/80 rounded-xl p-3 border border-slate-200 text-xs text-slate-600 flex items-center gap-2">
+            <svg class="w-4 h-4 text-[#13495C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Todas as fotos foram conferidas in loco pelo assessor técnico responsável pela vistoria no Flamengo.</span>
+          </div>
+        </div>
+
+        <!-- COLUNA DIREITA: CARDS DE INFORMAÇÕES -->
+        <div class="lg:col-span-5 space-y-4">
+
+          <!-- 1. Card "Próximo passo" -->
+          <div id="detail-nextstep-card" class="rounded-xl p-5 shadow-sm border transition-all">
+            <!-- Renderizado dinamicamente via JS -->
+          </div>
+
+          <!-- 2. Card "Valores" -->
+          <div id="detail-values-card" class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-3">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center justify-between">
+              <span>Valores & Negociação</span>
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </h3>
+            <div class="space-y-2 text-xs">
+              <div class="flex items-center justify-between py-1 border-b border-slate-100">
+                <span class="text-slate-500">Preço pedido original:</span>
+                <span id="detail-val-asking" class="font-bold text-slate-800 text-sm">R$ 370.000</span>
+              </div>
+              <div id="detail-proposal-row" class="flex items-center justify-between py-1 border-b border-slate-100 bg-emerald-50/60 px-2 rounded">
+                <div>
+                  <span class="text-emerald-800 font-semibold block">Proposta aceita:</span>
+                  <span id="detail-val-discount" class="text-[10px] bg-emerald-200 text-emerald-900 font-bold px-1.5 py-0.5 rounded">R$ 5.000 abaixo do pedido</span>
+                </div>
+                <span id="detail-val-proposed" class="font-bold text-emerald-700 text-base">R$ 365.000</span>
+              </div>
+              <div class="flex items-center justify-between py-1 border-b border-slate-100">
+                <span class="text-slate-500">Preço do m² deste imóvel:</span>
+                <span id="detail-val-sqm" class="font-bold text-slate-700">R$ 14.038/m²</span>
+              </div>
+              <div class="flex items-center justify-between py-1">
+                <span class="text-slate-500">Preço médio do m² na região:</span>
+                <span id="detail-val-sqm-avg" class="font-semibold text-slate-500">R$ 11.692/m²</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Card "Análise da Advestor" -->
+          <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-3.5">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center justify-between">
+              <span>Análise da Advestor</span>
+              <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Parecer do Assessor</span>
+            </h3>
+
+            <div>
+              <span class="text-xs font-bold text-emerald-700 uppercase tracking-wide flex items-center gap-1.5 mb-2">
+                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                Pontos Fortes
+              </span>
+              <ul id="detail-pros-list" class="space-y-1.5 text-xs text-slate-700">
+                <!-- Preenchido via JS -->
+              </ul>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100">
+              <span class="text-xs font-bold text-amber-700 uppercase tracking-wide flex items-center gap-1.5 mb-2">
+                <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                Pontos de Atenção
+              </span>
+              <ul id="detail-cons-list" class="space-y-1.5 text-xs text-slate-700">
+                <!-- Preenchido via JS -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- 4. Card "Histórico" -->
+          <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-slate-800 text-sm">Histórico do Imóvel</h3>
+              <span class="text-[11px] text-slate-400">Em ordem cronológica</span>
+            </div>
+            
+            <div id="detail-timeline-container" class="relative pl-5 space-y-4 border-l-2 border-slate-200 text-xs my-2">
+              <!-- Timeline via JS -->
+            </div>
+
+            <button id="btn-toggle-timeline" onclick="toggleFullTimeline()" class="text-xs text-[#13495C] font-semibold hover:text-[#B5652B] transition pt-1 block">
+              Ver histórico completo (5 eventos) →
+            </button>
+          </div>
+
+          <!-- 5. Card "Ficha técnica" -->
+          <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-3">
+            <h3 class="font-bold text-slate-800 text-sm">Ficha Técnica</h3>
+            <div id="detail-specs-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs text-slate-700">
+              <!-- Preenchido via JS -->
+            </div>
+          </div>
+
+          <!-- 6. Card "Documentos" -->
+          <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-3">
+            <h3 class="font-bold text-slate-800 text-sm flex items-center justify-between">
+              <span>Documentos e Certidões</span>
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </h3>
+            <div id="detail-documents-list" class="space-y-2 text-xs">
+              <!-- Preenchido via JS -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAIS                                                                    -->
+  <!-- ========================================================================= -->
+
+  <!-- MODAL: MINHA AGENDA -->
+  <div id="modal-calendar" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <div>
+          <h2 class="text-lg font-bold text-[#13495C] flex items-center gap-2">
+            <svg class="w-5 h-5 text-[#B5652B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Minha Agenda de Visitas e Prazos
+          </h2>
+          <p class="text-xs text-slate-500">Compromissos e datas críticas unificadas de todos os seus imóveis</p>
+        </div>
+        <button onclick="closeModal('modal-calendar')" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="my-4">
+        <div class="flex items-center justify-between mb-3 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+          <span class="font-bold text-slate-800 text-sm">Novembro de 2026</span>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#B5652B]"></span> Prazo Decisão</span>
+            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-[#13495C]"></span> Visita Agendada</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-slate-500 mb-1">
+          <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+        </div>
+        <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-xs">
+          <!-- Calendário via JS -->
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-slate-200 space-y-2">
+        <h4 class="font-bold text-xs uppercase text-slate-500 tracking-wider">Próximos Compromissos</h4>
+        <div class="space-y-2 text-xs" id="calendar-events-list">
+          <!-- Compromissos via JS -->
+        </div>
+      </div>
+
+      <div class="mt-5 text-right">
+        <button onclick="closeModal('modal-calendar')" class="px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: INDICAR UM IMÓVEL -->
+  <div id="modal-recommend" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <h2 class="text-base font-bold text-[#13495C]">Indicar Imóvel para Análise</h2>
+        <button onclick="closeModal('modal-recommend')" class="text-slate-400 hover:text-slate-700">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <form onsubmit="handleRecommendSubmit(event)" class="mt-4 space-y-3.5 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Link do anúncio (Zap, VivaReal, QuintoAndar, imobiliária, etc.):</label>
+          <input type="url" id="recommend-url" required placeholder="https://www.zapimoveis.com.br/imovel/..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#13495C] focus:border-[#13495C] outline-none">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Observações ou o que chamou sua atenção:</label>
+          <textarea id="recommend-notes" rows="3" placeholder="Ex: Gostei da vista da sala, mas achei o condomínio alto. Vale fazer uma visita?" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#13495C] focus:border-[#13495C] outline-none"></textarea>
+        </div>
+        <p class="text-[11px] text-slate-500">
+          Nossa equipe fará a checagem técnica e documental do imóvel antes de prosseguirmos para o agendamento da visita.
+        </p>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('modal-recommend')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-[#B5652B] hover:bg-[#9B5422] text-white font-semibold rounded-lg shadow-sm">Enviar para o Assessor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRMAR APROVAÇÃO DE PROPOSTA -->
+  <div id="modal-confirm-approval" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+      <div class="text-center space-y-3">
+        <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">Confirmar Aprovação da Proposta?</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Você está formalizando a aceitação da negociação no valor de <strong id="modal-approval-price" class="text-slate-900">R$ 365.000</strong> para o imóvel do <strong id="modal-approval-place" class="text-slate-900">Flamengo</strong>.
+        </p>
+        <div class="bg-slate-50 p-3 rounded-lg text-left text-[11px] text-slate-600 border border-slate-100">
+          ✓ Seu assessor entrará em contato de imediato para colher os documentos para a minuta do sinal.<br>
+          ✓ Nenhuma transferência é feita nesta etapa do portal.
+        </div>
+      </div>
+      <div class="mt-5 flex gap-2 justify-end text-xs font-semibold">
+        <button onclick="closeModal('modal-confirm-approval')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg">Voltar e pensar mais</button>
+        <button onclick="executeProposalApproval()" class="px-4 py-2 bg-[#13495C] hover:bg-[#0E3645] text-white rounded-lg shadow-sm">Sim, aprovar proposta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: LIGHTBOX DE FOTOS TELA CHEIA -->
+  <div id="modal-lightbox" class="hidden fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-between p-4">
+    <div class="w-full flex items-center justify-between text-white text-xs max-w-5xl">
+      <span id="lightbox-counter" class="font-semibold bg-white/20 px-3 py-1 rounded-full">1 / 8</span>
+      <button onclick="closeLightbox()" class="text-white hover:text-red-400 p-2 text-sm font-bold">
+        Fechar ✕
+      </button>
+    </div>
+    <div class="relative flex-1 flex items-center justify-center max-w-5xl w-full">
+      <img id="lightbox-img" src="" alt="Foto expandida" class="max-h-[80vh] max-w-full object-contain rounded-lg">
+      <button onclick="prevPhoto()" class="absolute left-2 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/80 text-white rounded-full">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button onclick="nextPhoto()" class="absolute right-2 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/80 text-white rounded-full">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="text-white/60 text-xs py-2">
+      Pressione Esc para fechar ou use as setas para navegar
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION FLUTUANTE -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-[#13495C] text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-xs transform transition-all duration-300 translate-y-20 opacity-0 pointer-events-none">
+    <div class="w-2 h-2 rounded-full bg-[#B5652B]"></div>
+    <span id="toast-message">Notificação</span>
+  </div>
+
+  <!-- CHAMADA DO SCRIPT EXTERNO DO PORTAL -->
+  <script src="portal.js"></script>
+</body>
+</html>

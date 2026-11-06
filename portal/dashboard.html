@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard do Assessor | Advestor Real Estate Solutions</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Open Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            advestor: {
+              teal: '#13495C',
+              'teal-dark': '#0E3644',
+              'teal-light': '#E8F1F4',
+              copper: '#B5652B',
+              'copper-dark': '#9A5221',
+              'copper-light': '#FDF4EC'
+            }
+          },
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Suporte nativo ao controle linear duplo */
+    .range-slider-input::-webkit-slider-thumb {
+      pointer-events: auto;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #13495C;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+      cursor: grab;
+    }
+    .range-slider-input::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      transform: scale(1.15);
+    }
+    .range-slider-input::-moz-range-thumb {
+      pointer-events: auto;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #13495C;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+      cursor: grab;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col justify-between">
+
+  <!-- 1. FAIXA SUPERIOR -->
+  <header class="w-full">
+    <div class="bg-advestor-teal text-white text-xs py-2 px-4 sm:px-8">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div class="flex items-center gap-4 text-gray-200">
+          <span class="font-bold tracking-wider uppercase text-amber-300 flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1"/></svg>
+            Painel Geral do Administrador
+          </span>
+          <span class="text-gray-400 hidden sm:inline">|</span>
+          <span class="text-gray-300">Gestão de Carteira e Credenciais</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-gray-300 text-xs">Assessor: <strong class="text-white">Carlos Drummond</strong></span>
+          <span class="text-gray-400">|</span>
+          <a href="login.php" class="text-gray-300 hover:text-white text-xs underline font-medium">Sair</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. NAVBAR -->
+    <div class="bg-white border-b border-gray-200 py-3.5 px-4 sm:px-8 shadow-xs">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <img src="logo.png" alt="Advestor" class="h-9 w-auto object-contain" onerror="this.style.display='none'">
+          <span class="text-base font-bold text-advestor-teal">ADVESTOR</span>
+          <span class="text-xs border-l border-gray-300 pl-3 font-semibold text-gray-500 uppercase tracking-wider">Hub de Clientes</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="openModalNewClient()" class="bg-advestor-copper hover:bg-advestor-copper-dark text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition shadow-sm cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+            <span>Novo Cliente</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-8 py-8 space-y-6">
+
+    <!-- CARDS DE MÉTRICAS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400 block">Clientes Ativos</span>
+          <span id="metric-total-clients" class="text-2xl font-bold text-slate-900 mt-1 block">0</span>
+        </div>
+        <div class="w-11 h-11 rounded-lg bg-advestor-teal-light text-advestor-teal flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400 block">Imóveis Monitorados</span>
+          <span id="metric-total-properties" class="text-2xl font-bold text-slate-900 mt-1 block">0</span>
+        </div>
+        <div class="w-11 h-11 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400 block">Propostas em Curso</span>
+          <span id="metric-active-proposals" class="text-2xl font-bold text-advestor-copper mt-1 block">0</span>
+        </div>
+        <div class="w-11 h-11 rounded-lg bg-orange-50 text-advestor-copper flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex items-center justify-between">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400 block">Visitas Agendadas</span>
+          <span id="metric-scheduled-visits" class="text-2xl font-bold text-emerald-700 mt-1 block">0</span>
+        </div>
+        <div class="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABELA DE CLIENTES -->
+    <div class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
+      <div class="p-5 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-gray-50/60">
+        <div>
+          <h2 class="text-lg font-bold text-gray-900">Carteira de Clientes Ativos</h2>
+          <p class="text-xs text-gray-500">Selecione um cliente para gerenciar os imóveis, propostas e o dossiê exclusivo</p>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <input 
+            type="text" 
+            id="search-client" 
+            oninput="filterClientsTable()" 
+            placeholder="Buscar por nome ou bairro..." 
+            class="text-xs border border-gray-300 rounded-lg px-3 py-2 w-full sm:w-64 bg-white focus:outline-none focus:ring-1 focus:ring-advestor-teal"
+          >
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="bg-gray-100 text-[11px] uppercase text-gray-700 font-semibold border-b">
+            <tr>
+              <th class="px-6 py-3.5">Cliente</th>
+              <th class="px-6 py-3.5">Perfil de Busca</th>
+              <th class="px-6 py-3.5">Acesso / Senha Provisória</th>
+              <th class="px-6 py-3.5 text-center">Imóveis</th>
+              <th class="px-6 py-3.5 text-right">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="clients-table-body" class="divide-y divide-gray-200">
+            <!-- Inserido dinamicamente via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: CADASTRAR / EDITAR CLIENTE -->
+  <div id="modal-client" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-6 sm:p-8 space-y-5 shadow-2xl">
+      
+      <div class="flex items-center justify-between border-b pb-4">
+        <div>
+          <h3 id="modal-client-title" class="text-xl font-bold text-gray-900">Cadastrar Novo Cliente</h3>
+          <p class="text-xs text-gray-500 mt-0.5">Preencha os dados de assessoria e gere a senha de primeiro acesso do cliente</p>
+        </div>
+        <button onclick="closeModalClient()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold cursor-pointer">&times;</button>
+      </div>
+
+      <form id="form-client" onsubmit="saveClient(event)" class="space-y-4">
+        <input type="hidden" id="client-id">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nome Completo *</label>
+            <input type="text" id="input-client-name" required placeholder="Ex: Mariana Vasconcelos" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-advestor-teal">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">E-mail *</label>
+            <input type="email" id="input-client-email" required placeholder="mariana@exemplo.com" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-advestor-teal">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- 1. CAMPO TELEFONE FORMATADO (+DDI ou DDD local) -->
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">WhatsApp / Telefone *</label>
+            <input 
+              type="text" 
+              id="input-client-phone" 
+              required 
+              oninput="maskDualPhone(this)"
+              placeholder="+55 (21) 99988-7766 ou (21) 99988-7766" 
+              class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-advestor-teal"
+            >
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Assessor Responsável</label>
+            <input type="text" id="input-client-advisor" value="Carlos Drummond" class="w-full border rounded-lg px-3 py-2 text-sm bg-gray-50 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- 2. BAIRROS DE INTERESSE COM TOAST/MENSAGEM DE 2 SEGUNDOS -->
+        <div class="relative">
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-gray-700 uppercase">Bairros de Interesse *</label>
+            <div id="tip-neighborhoods" class="hidden opacity-0 transition-opacity duration-300 text-[11px] font-bold text-advestor-teal bg-advestor-teal-light px-2.5 py-0.5 rounded-full border border-advestor-teal/20 flex items-center gap-1 shadow-xs">
+              <svg class="w-3.5 h-3.5 text-advestor-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>Separe por vírgula</span>
+            </div>
+          </div>
+          <input 
+            type="text" 
+            id="input-client-neighborhoods" 
+            onfocus="showNeighborhoodTip()" 
+            required 
+            placeholder="Ex: Ipanema, Leblon, Copacabana" 
+            class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-advestor-teal"
+          >
+        </div>
+
+        <!-- 3. ORÇAMENTO MÁXIMO / TETO (MÁSCARA MONETÁRIA BRL) -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Orçamento Máximo (R$)</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="input-client-budget" 
+              oninput="maskCurrencyBRL(this)" 
+              placeholder="Ex: R$ 1.200.000,00" 
+              class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-advestor-teal font-medium"
+            >
+          </div>
+        </div>
+
+        <!-- 4. METRAGEM E QUARTOS SEPARADOS (COM CONTROLE LINEAR DUPLO) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+          
+          <!-- CONTROLE DE METRAGEM (2 COLUNAS) -->
+          <div class="sm:col-span-2 bg-gray-50/80 p-3.5 rounded-xl border border-gray-200 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-gray-700 uppercase">Metragem Desejada (m²)</label>
+              <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-advestor-teal">
+                <input 
+                  type="number" 
+                  id="input-area-min" 
+                  min="20" 
+                  max="600" 
+                  value="30" 
+                  oninput="syncInputsToSlider()" 
+                  class="w-14 text-center bg-white border border-gray-300 rounded px-1 py-0.5 text-xs font-bold"
+                >
+                <span class="text-gray-400">até</span>
+                <input 
+                  type="number" 
+                  id="input-area-max" 
+                  min="20" 
+                  max="600" 
+                  value="150" 
+                  oninput="syncInputsToSlider()" 
+                  class="w-14 text-center bg-white border border-gray-300 rounded px-1 py-0.5 text-xs font-bold"
+                >
+                <span class="text-gray-500 font-sans font-semibold">m²</span>
+              </div>
+            </div>
+
+            <!-- CONTROLE LINEAR DUPLO COM 2 PONTOS DESLIZANTES -->
+            <div class="relative w-full h-7 flex items-center px-1">
+              <div class="absolute inset-x-1 h-2 bg-gray-200 rounded-full"></div>
+              <div id="slider-track" class="absolute h-2 bg-advestor-teal rounded-full" style="left: 2%; right: 75%;"></div>
+              
+              <input 
+                type="range" 
+                id="slider-min" 
+                min="20" 
+                max="600" 
+                value="30" 
+                step="5" 
+                oninput="syncSliderToInputs('min')" 
+                class="range-slider-input absolute inset-x-0 w-full pointer-events-none appearance-none bg-transparent"
+              >
+              <input 
+                type="range" 
+                id="slider-max" 
+                min="20" 
+                max="600" 
+                value="150" 
+                step="5" 
+                oninput="syncSliderToInputs('max')" 
+                class="range-slider-input absolute inset-x-0 w-full pointer-events-none appearance-none bg-transparent"
+              >
+            </div>
+            <div class="flex justify-between text-[10px] text-gray-400 px-1 font-semibold">
+              <span>20 m²</span>
+              <span>200 m²</span>
+              <span>400 m²</span>
+              <span>600 m²</span>
+            </div>
+          </div>
+
+          <!-- CAMPO SEPARADO DE QUARTOS (1 COLUNA) -->
+          <div class="bg-gray-50/80 p-3.5 rounded-xl border border-gray-200 flex flex-col justify-between">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Quartos *</label>
+              <p class="text-[11px] text-gray-500 mb-2">Quantidade desejada</p>
+            </div>
+            <input 
+              type="text" 
+              id="input-client-bedrooms" 
+              required 
+              placeholder="Ex: 2 a 3 quartos" 
+              class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-advestor-teal font-medium"
+            >
+          </div>
+
+        </div>
+
+        <!-- BLOCO DA SENHA PROVISÓRIA -->
+        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+              Senha Provisória de Acesso
+            </span>
+            <button type="button" onclick="generateTemporaryPassword()" class="text-xs font-bold text-advestor-teal hover:underline flex items-center gap-1 cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Gerar Nova
+            </button>
+          </div>
+          <div class="flex gap-2 items-center">
+            <input 
+              type="text" 
+              id="input-client-temp-password" 
+              required 
+              readonly
+              class="flex-grow bg-white border border-amber-300 rounded-lg px-3 py-2 text-sm font-mono font-bold text-amber-900"
+            >
+            <button type="button" onclick="copyTemporaryPassword()" class="bg-white hover:bg-amber-100 border border-amber-300 text-amber-900 text-xs font-bold px-3 py-2 rounded-lg transition cursor-pointer">
+              Copiar
+            </button>
+          </div>
+          <p class="text-[11px] text-amber-800">Esta senha será enviada ao cliente para o primeiro acesso ao portal.</p>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-3 border-t">
+          <button type="button" onclick="closeModalClient()" class="px-4 py-2 border rounded-lg text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">Cancelar</button>
+          <button type="submit" class="px-6 py-2 bg-advestor-teal hover:bg-advestor-teal-dark text-white rounded-lg text-sm font-bold uppercase tracking-wider transition shadow-sm cursor-pointer">
+            Salvar e Cadastrar
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- MODAL: CONVITE PRONTO PARA WHATSAPP -->
+  <div id="modal-whatsapp-invite" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+          <span class="text-emerald-600 font-bold">✓</span> Convite do Cliente Gerado
+        </h3>
+        <button onclick="closeModalInvite()" class="text-gray-400 hover:text-gray-600 font-bold text-xl cursor-pointer">&times;</button>
+      </div>
+
+      <p class="text-xs text-gray-600">Copie o texto pronto para enviar no WhatsApp do cliente com as credenciais:</p>
+      
+      <textarea id="invite-text-output" rows="6" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 font-mono text-xs text-gray-800 focus:outline-none" readonly></textarea>
+      
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="copyInviteText()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition cursor-pointer">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <span>Copiar Mensagem</span>
+        </button>
+        <button onclick="closeModalInvite()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg text-xs font-bold cursor-pointer">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ INSTITUCIONAL -->
+  <footer class="bg-advestor-teal text-white text-xs pt-6 pb-6 border-t border-advestor-teal-dark mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 text-center space-y-2">
+      <p class="font-medium">Advestor Real Estate Solutions · Sistema de Gestão do Cliente</p>
+      <p class="text-gray-400">Av Rio Branco, 89 - Centro Rio de Janeiro - CEP: 20040-004</p>
+    </div>
+  </footer>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

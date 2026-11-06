@@ -1,0 +1,484 @@
+/* ==========================================================================
+   ADVESTOR REAL ESTATE SOLUTIONS - GLOBAL STYLESHEET (style.css)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+/* --------------------------------------------------------------------------
+   1. VARIÁVEIS DE TEMA (DESIGN SYSTEM)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Cores Institucionais Advestor */
+  --advestor-teal: #13495C;
+  --advestor-teal-dark: #0E3644;
+  --advestor-teal-light: #E8F1F4;
+  --advestor-copper: #B5652B;
+  --advestor-copper-dark: #9A5221;
+  --advestor-copper-light: #FDF4EC;
+
+  /* Neutros e Superfícies */
+  --bg-page: #F8F9FA;
+  --bg-surface: #FFFFFF;
+  --text-main: #1F2937;
+  --text-muted: #6B7280;
+  --text-subtle: #9CA3AF;
+  --border-color: #E5E7EB;
+  --border-color-dark: #D1D5DB;
+
+  /* Estados e Badges */
+  --status-analise-bg: #E2E8F0;
+  --status-analise-txt: #1E293B;
+  --status-visita-bg: #E0F2FE;
+  --status-visita-txt: #0369A1;
+  --status-decisao-bg: #FEF3C7;
+  --status-decisao-txt: #92400E;
+  --status-decisao-border: #F59E0B;
+  --status-descartado-bg: #FEE2E2;
+  --status-descartado-txt: #991B1B;
+  --status-fechado-bg: #D1FAE5;
+  --status-fechado-txt: #065F46;
+
+  /* Tipografia e Raio */
+  --font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET & REGRAS BASE
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   3. CABEÇALHOS & NAVBAR
+   -------------------------------------------------------------------------- */
+.advestor-topbar {
+  background-color: var(--advestor-teal);
+  color: #FFFFFF;
+  font-size: 12px;
+  padding: 8px 16px;
+}
+
+.advestor-topbar a:hover {
+  color: #E2E8F0;
+}
+
+.advestor-navbar {
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  padding: 14px 24px;
+}
+
+.advestor-navlink {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: color 0.15s ease-in-out;
+}
+
+.advestor-navlink:hover {
+  color: var(--advestor-teal);
+}
+
+.advestor-breadcrumb {
+  background-color: #F3F4F6;
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 24px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.advestor-breadcrumb a:hover {
+  color: var(--advestor-teal);
+}
+
+/* --------------------------------------------------------------------------
+   4. FORMULÁRIOS & CAMPOS (LOGIN, RECUPERAÇÃO E ADMIN)
+   -------------------------------------------------------------------------- */
+.form-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 14px;
+  border: 1px solid var(--border-color-dark);
+  border-radius: var(--radius-sm);
+  background-color: #FFFFFF;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--advestor-teal);
+  box-shadow: 0 0 0 1px var(--advestor-teal);
+}
+
+/* --------------------------------------------------------------------------
+   5. BOTÕES PADRÃO
+   -------------------------------------------------------------------------- */
+.btn-primary {
+  display: inline-block;
+  background-color: var(--advestor-teal);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: var(--advestor-teal-dark);
+}
+
+.btn-copper {
+  display: inline-block;
+  background-color: var(--advestor-copper);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-copper:hover {
+  background-color: var(--advestor-copper-dark);
+}
+
+.btn-secondary {
+  display: inline-block;
+  background-color: #FFFFFF;
+  color: #374151;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color-dark);
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-secondary:hover {
+  background-color: #F9FAFB;
+}
+
+/* --------------------------------------------------------------------------
+   6. CARDS DE IMÓVEIS (PORTAL DO CLIENTE)
+   -------------------------------------------------------------------------- */
+.property-card {
+  display: flex;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  height: 140px; /* Altura padronizada fixa */
+  position: relative;
+  transition: box-shadow 0.15s;
+}
+
+.property-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.property-card-photo {
+  width: 220px;
+  min-width: 220px;
+  height: 100%;
+  object-fit: cover;
+  background-color: #E5E7EB;
+}
+
+.property-card-body {
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+}
+
+.property-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.property-metrics {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.property-nextstep {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   7. BADGES DE STATUS (PADRÃO PARA TODAS AS PÁGINAS)
+   -------------------------------------------------------------------------- */
+.status-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  line-height: 1.2;
+}
+
+.status-analise {
+  background-color: var(--status-analise-bg);
+  color: var(--status-analise-txt);
+}
+
+.status-visita {
+  background-color: var(--status-visita-bg);
+  color: var(--status-visita-txt);
+}
+
+.status-decisao {
+  background-color: var(--status-decisao-bg);
+  color: var(--status-decisao-txt);
+  border: 1px solid var(--status-decisao-border);
+}
+
+.status-descartado {
+  background-color: var(--status-descartado-bg);
+  color: var(--status-descartado-txt);
+}
+
+.status-fechado {
+  background-color: var(--status-fechado-bg);
+  color: var(--status-fechado-txt);
+}
+
+/* --------------------------------------------------------------------------
+   8. TABELA ADMINISTRATIVA (admin.html)
+   -------------------------------------------------------------------------- */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.admin-table th {
+  background-color: #F9FAFB;
+  padding: 12px 18px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #4B5563;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+  background-color: #F9FAFB;
+}
+
+/* --------------------------------------------------------------------------
+   9. MODAIS & JANELAS SUSPENSAS
+   -------------------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-content {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   10. RODAPÉ INSTITUCIONAL
+   -------------------------------------------------------------------------- */
+.advestor-footer {
+  background-color: var(--advestor-teal);
+  color: #FFFFFF;
+  font-size: 12px;
+  padding: 28px 16px;
+  border-top: 1px solid var(--advestor-teal-dark);
+  margin-top: auto;
+  text-align: center;
+}
+
+.advestor-footer a {
+  color: #E2E8F0;
+  transition: color 0.15s;
+}
+
+.advestor-footer a:hover {
+  color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   11. RESPONSIVIDADE BÁSICA
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .property-card {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .property-card-photo {
+    width: 100%;
+    height: 180px;
+  }
+  
+  .advestor-topbar {
+    text-align: center;
+  }
+}
+
+/* style.css - Estilos Globais e Customizações da Advestor */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Badges de Status dos Imóveis */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Barra de rolagem personalizada para modais e tabelas */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Dual Range Slider Thumbs */
+.range-slider-input::-webkit-slider-thumb {
+  pointer-events: auto;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #13495C;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  cursor: grab;
+}
+
+.range-slider-input::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+
+.range-slider-input::-moz-range-thumb {
+  pointer-events: auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #13495C;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  cursor: grab;
+}

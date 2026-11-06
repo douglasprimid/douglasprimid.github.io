@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>Painel do Assessor | Advestor Real Estate Solutions</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Open Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            advestor: {
+              teal: '#13495C',
+              'teal-dark': '#0E3644',
+              'teal-light': '#E8F1F4',
+              copper: '#B5652B',
+              'copper-dark': '#9A5221',
+              'copper-light': '#FDF4EC'
+            }
+          },
+          fontFamily: {
+            sans: ['"Open Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f8fafc;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .drag-over {
+      border-color: #13495C !important;
+      background-color: #E8F1F4 !important;
+    }
+    /* Transição suave de cor do botão salvar */
+    .btn-save-transition {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col justify-between">
+
+  <!-- 1. FAIXA SUPERIOR -->
+  <header class="w-full">
+    <div class="bg-advestor-teal text-white text-xs py-2 px-4 sm:px-8">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div class="flex items-center gap-4 text-gray-200">
+          <span class="font-bold tracking-wider uppercase text-amber-300 flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Painel do Assessor Advestor
+          </span>
+          <span class="text-gray-400 hidden sm:inline">|</span>
+          <span class="text-gray-300">Gestão de Portais de Clientes</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="index.php" target="_blank" class="bg-advestor-copper hover:bg-advestor-copper-dark text-white px-3 py-1 rounded text-xs font-semibold flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            <span>Visualizar Portal do Cliente</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. NAVBAR -->
+    <div class="bg-white border-b border-gray-200 py-3.5 px-4 sm:px-8">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <img src="logo.png" alt="Advestor" class="h-10 w-auto object-contain" onerror="this.style.display='none'">
+          <span class="text-base font-bold text-advestor-teal">ADVESTOR</span>
+          <span class="text-sm border-l border-gray-300 pl-4 font-semibold text-gray-500">Módulo Administrativo</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="exportJSON()" class="bg-advestor-teal hover:bg-advestor-teal-dark text-white px-3.5 py-2 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+            <span>Exportar JSON</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-8 py-8 space-y-6">
+
+    <!-- BOTÃO DE VOLTAR -->
+    <div>
+      <a href="dashboard.php" class="inline-flex items-center gap-1.5 text-xs font-bold text-advestor-teal hover:text-advestor-teal-dark hover:underline transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        <span>← Voltar para Lista de Clientes (Dashboard)</span>
+      </a>
+    </div>
+
+    <!-- BARRA DO CLIENTE ATIVO -->
+    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Cliente Selecionado</span>
+        <div class="flex items-center gap-3 mt-1">
+          <h2 id="client-name" class="text-xl font-bold text-gray-900">João Exemplo</h2>
+          <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-semibold">Assessoria Ativa</span>
+        </div>
+        <p id="client-criteria" class="text-xs text-gray-500 mt-1">Flamengo, Botafogo, Copacabana, Laranjeiras · R$ 350k - R$ 900k · 25 a 90 m²</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openModalProperty()" class="bg-advestor-copper hover:bg-advestor-copper-dark text-white font-bold px-4 py-2 rounded-lg text-xs uppercase tracking-wider flex items-center gap-1.5 transition shadow-sm cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span>Novo Imóvel</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TABELA ADMINISTRATIVA GERENCIAL DE IMÓVEIS -->
+    <div class="bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50/80">
+        <h3 class="font-bold text-gray-800 text-base">Imóveis em Acompanhamento (<span id="total-count">0</span>)</h3>
+        <span class="text-xs text-gray-500">Alterações salvas automaticamente no navegador</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="bg-gray-100 text-[11px] uppercase text-gray-700 font-semibold border-b">
+            <tr>
+              <th class="px-6 py-3.5">Imóvel</th>
+              <th class="px-6 py-3.5">Status</th>
+              <th class="px-6 py-3.5">Pedido / Proposta</th>
+              <th class="px-6 py-3.5">Próximo Passo / Motivo</th>
+              <th class="px-6 py-3.5 text-right">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="properties-table-body" class="divide-y divide-gray-200">
+            <!-- Linhas inseridas dinamicamente via admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: EDITOR COMPLETO DO IMÓVEL (ESTILO INDEX DO CLIENTE)     -->
+  <!-- ============================================================== -->
+  <div id="modal-property" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-2 sm:p-4 backdrop-blur-xs">
+    <div class="bg-gray-50 rounded-2xl max-w-5xl w-full max-h-[96vh] flex flex-col shadow-2xl overflow-hidden border border-gray-200">
+      
+      <!-- TOPO DO EDITOR: NAVEGAÇÃO, TÍTULO, STATUS E BOTÃO SALVAR DINÂMICO -->
+      <div class="bg-white border-b border-gray-200 px-6 py-4 shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <button type="button" onclick="closeModalProperty()" class="text-xs font-bold text-advestor-teal hover:underline flex items-center gap-1 mb-1.5 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            <span>← Voltar para lista de imóveis</span>
+          </button>
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 id="modal-header-title" class="text-xl font-bold text-advestor-teal tracking-tight">Editar Imóvel</h2>
+            <span id="modal-badge-status" class="bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider">
+              AGUARDANDO SUA DECISÃO
+            </span>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+            <span>Código Advestor:</span>
+            <input type="text" id="prop-codigo" oninput="markFormDirty()" placeholder="ADV-FLA26" class="border border-gray-300 rounded px-2 py-0.5 font-mono text-xs font-bold text-gray-700 bg-gray-50 focus:bg-white w-28">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="closeModalProperty()" class="px-4 py-2.5 border border-gray-300 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 transition cursor-pointer">
+            Cancelar
+          </button>
+          
+          <!-- BOTÃO SALVAR NO TOPO (DINÂMICO: CINZA QUANDO SALVO / VERDE QUANDO ALTERADO) -->
+          <button 
+            type="button" 
+            id="btn-save-header"
+            onclick="submitPropertyForm()" 
+            class="btn-save-transition bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider flex items-center gap-2 transition cursor-pointer shadow-xs"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="btn-save-text">Salvar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CORPO ROLÁVEL COM TODAS AS SEÇÕES ESTILO PORTAL DO CLIENTE -->
+      <div class="overflow-y-auto custom-scroll p-6 space-y-6">
+
+        <!-- BARRA DE IMPORTAÇÃO AUTOMÁTICA VIA EXTENSÃO (RESTAURADA) -->
+        <div class="bg-advestor-teal-light/70 p-4 rounded-2xl border border-advestor-teal/20 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-advestor-teal uppercase flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-advestor-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              <span>Importar Imóvel Automaticamente (Extensão Chrome)</span>
+            </label>
+            <span class="text-[11px] text-gray-500 font-medium hidden sm:inline">ZAP, VivaReal, QuintoAndar, Imovelweb, etc.</span>
+          </div>
+          <div class="flex gap-2">
+            <input 
+              type="url" 
+              id="import-url" 
+              placeholder="Cole o link do imóvel (ex: https://www.zapimoveis.com.br/imovel/...)" 
+              class="flex-grow border border-gray-300 rounded-xl px-3 py-2 text-xs sm:text-sm bg-white focus:outline-none focus:ring-1 focus:ring-advestor-teal"
+            >
+            <button 
+              type="button" 
+              id="btn-import"
+              onclick="importFromExtension()" 
+              class="bg-advestor-teal hover:bg-advestor-teal-dark text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider whitespace-nowrap transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+              <span>Importar Dados</span>
+            </button>
+          </div>
+          <p id="import-status" class="text-[11px] hidden"></p>
+        </div>
+
+        <form id="form-property" onsubmit="saveProperty(event)" class="space-y-6">
+          <input type="hidden" id="prop-id">
+
+          <!-- 1. IDENTIFICAÇÃO BÁSICA DO IMÓVEL (BAIRRO, RUA, METRAGEM) -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h4 class="text-xs font-bold uppercase text-gray-700 tracking-wider">Identificação do Imóvel</h4>
+              <span class="text-[11px] text-gray-400">Exibido no título principal do portal</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Bairro *</label>
+                <input type="text" id="prop-bairro" required oninput="markFormDirty()" placeholder="Ex: Flamengo" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-advestor-teal focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Logradouro / Rua *</label>
+                <input type="text" id="prop-rua" required oninput="markFormDirty()" placeholder="Ex: Rua Marquês de Abrantes" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-advestor-teal focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Metragem Útil (m²) *</label>
+                <input type="number" id="prop-area" step="any" required oninput="recalcValues(); markFormDirty();" placeholder="Ex: 26" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-advestor-teal focus:outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. GALERIA DE MÍDIA (FOTOS E VÍDEOS MANUAIS - SEM POPUP) -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b pb-3">
+              <div>
+                <h4 class="text-xs font-bold uppercase text-gray-700 tracking-wider flex items-center gap-2">
+                  <svg class="w-4 h-4 text-advestor-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span>Galeria de Mídia (Fotos e Vídeos)</span>
+                </h4>
+                <p class="text-xs text-gray-500">Adicione fotos ou vídeos (incluindo links diretos do YouTube)</p>
+              </div>
+
+              <!-- BOTÕES DE ADIÇÃO DE MÍDIA -->
+              <div class="flex items-center gap-2">
+                <label class="bg-gray-100 hover:bg-gray-200 text-advestor-teal text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer transition flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                  <span>Upload Foto</span>
+                  <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                </label>
+                <button type="button" onclick="showInlineMediaInput()" class="bg-gray-100 hover:bg-gray-200 text-advestor-teal text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1 cursor-pointer">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                  <span>Link de Foto / YouTube</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- CAMPO INLINE PARA ADICIONAR LINK (SEM O POPUP NATIVO DO BROWSER) -->
+            <div id="inline-media-box" class="hidden bg-gray-50 p-3 rounded-xl border border-gray-200 space-y-2">
+              <label class="block text-[11px] font-bold text-gray-600 uppercase">Cole a URL direta da imagem ou vídeo do YouTube:</label>
+              <div class="flex gap-2">
+                <input 
+                  type="url" 
+                  id="input-inline-media-url" 
+                  placeholder="https://exemplo.com/foto.jpg ou https://www.youtube.com/watch?v=..." 
+                  class="flex-grow bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-advestor-teal"
+                  onkeydown="if(event.key === 'Enter'){ event.preventDefault(); confirmAddMediaUrl(); } else if(event.key === 'Escape'){ hideInlineMediaInput(); }"
+                >
+                <button type="button" onclick="confirmAddMediaUrl()" class="bg-advestor-teal hover:bg-advestor-teal-dark text-white font-bold px-4 py-1.5 rounded-lg text-xs cursor-pointer flex items-center gap-1">
+                  <span>✔ Adicionar</span>
+                </button>
+                <button type="button" onclick="hideInlineMediaInput()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer">
+                  <span>✕</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- CONTAINER DO DESTAQUE PRINCIPAL (SUPORTA IMAGEM E VÍDEO YOUTUBE) -->
+            <div id="modal-hero-container" class="relative w-full h-72 sm:h-96 rounded-xl overflow-hidden bg-gray-900 border border-gray-200">
+              <!-- Renderizado dinamicamente via renderMediaGallery() como <img> ou <iframe> -->
+            </div>
+
+            <!-- CARROSSEL / GRADE DE MINIATURAS COM BOTÃO "X" -->
+            <div id="modal-media-thumbnails" class="grid grid-cols-3 sm:grid-cols-6 gap-3 pt-2">
+              <!-- Inserido dinamicamente via JS com botão X em cada foto -->
+            </div>
+          </div>
+
+          <!-- 3. PRÓXIMO PASSO & ALTERAÇÃO DE STATUS -->
+          <div class="bg-[#FFF9F5] border border-[#F6DEC9] p-5 rounded-2xl space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-advestor-copper flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-advestor-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  Status do Imóvel:
+                </span>
+                <select id="prop-status" required onchange="updateModalStatusBadge(this.value); markFormDirty();" class="bg-white border border-[#F6DEC9] rounded-lg px-3 py-1.5 text-xs font-bold text-gray-800 focus:outline-none focus:ring-1 focus:ring-advestor-copper">
+                  <option value="Aguardando sua decisão">Aguardando sua decisão</option>
+                  <option value="Visita agendada">Visita agendada</option>
+                  <option value="Proposta enviada">Proposta enviada</option>
+                  <option value="Contraproposta">Contraproposta</option>
+                  <option value="Em análise">Em análise</option>
+                  <option value="Fechado">Fechado</option>
+                  <option value="Descartado">Descartado</option>
+                </select>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <label class="text-[11px] font-bold text-gray-500 uppercase">Etiqueta de Alerta:</label>
+                <input type="text" id="prop-alerta" oninput="markFormDirty()" placeholder="REQUER SUA AÇÃO" class="bg-white border border-gray-300 rounded px-2.5 py-1 text-xs font-bold text-advestor-copper">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Mensagem de Instrução / Próximo Passo ao Cliente *</label>
+              <textarea id="prop-proximopasso" rows="2" oninput="markFormDirty()" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-advestor-teal" placeholder="O vendedor aceitou sua proposta de R$ 365.000. Precisamos da sua decisão até 06/11/2026."></textarea>
+            </div>
+
+            <div id="box-motivo-descarte" class="hidden">
+              <label class="block text-xs font-bold text-red-700 uppercase mb-1">Motivo do Descarte</label>
+              <input type="text" id="prop-motivo" oninput="markFormDirty()" placeholder="Ex: Apartamento de fundos, sem luz natural e muito úmido" class="w-full bg-white border border-red-200 rounded-xl px-3 py-2 text-sm text-red-800">
+            </div>
+          </div>
+
+          <!-- 4. VALORES & NEGOCIAÇÃO + VÍNCULO DIRETO COM O HISTÓRICO -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+              <h4 class="text-xs font-bold uppercase text-gray-700 tracking-wider flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Valores & Negociação</span>
+              </h4>
+              <!-- BOTÃO DE NOVA OFERTA CORRIGIDO (SEM ++ DUPLICADO) -->
+              <button type="button" onclick="openNewOfferModal()" class="bg-advestor-teal hover:bg-advestor-teal-dark text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-xs cursor-pointer">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>Nova Oferta / Histórico</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Preço Pedido Original *</label>
+                <input type="text" id="prop-preco" required oninput="maskCurrency(this); recalcValues(); markFormDirty();" placeholder="R$ 370.000,00" class="w-full border rounded-lg px-3 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:ring-1 focus:ring-advestor-teal">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Proposta Aceita / Atual</label>
+                <input type="text" id="prop-proposta" oninput="maskCurrency(this); recalcValues(); markFormDirty();" placeholder="R$ 365.000,00" class="w-full border rounded-lg px-3 py-2 text-sm font-bold text-emerald-800 bg-emerald-50/50 focus:outline-none focus:ring-1 focus:ring-emerald-600">
+                <div id="prop-desconto-badge" class="text-[11px] font-bold text-emerald-700 mt-1">R$ 5.000 abaixo do pedido</div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">R$/m² Deste Imóvel</label>
+                <input type="text" id="prop-m2-imovel" readonly class="w-full border rounded-lg px-3 py-2 text-sm font-bold bg-gray-100 text-gray-700">
+                <span class="text-[10px] text-gray-400">Calculado automaticamente</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">R$/m² Médio na Região</label>
+                <input type="text" id="prop-m2-regiao" oninput="maskCurrency(this); markFormDirty();" placeholder="R$ 11.692,00" class="w-full border rounded-lg px-3 py-2 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-advestor-teal">
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. ANÁLISE DA ADVESTOR (PONTOS COM ALINHAMENTO DO "X" E CANCELAMENTO) -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-5">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h4 class="text-xs font-bold uppercase text-gray-700 tracking-wider">Análise da Advestor</h4>
+                <p class="text-xs text-gray-500">Parecer técnico e comercial formulado pelo assessor</p>
+              </div>
+              <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2.5 py-1 rounded">PARECER DO ASSESSOR</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- PONTOS FORTES -->
+              <div class="space-y-3">
+                <div class="flex items-center justify-between px-2">
+                  <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    PONTOS FORTES
+                  </span>
+                  <!-- BOTÃO "+" -->
+                  <button type="button" onclick="showInputNewPoint('forte')" class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 hover:bg-emerald-200 flex items-center justify-center font-bold text-sm transition cursor-pointer" title="Adicionar Ponto Forte">
+                    +
+                  </button>
+                </div>
+
+                <!-- CAMPO COM BOTÃO "✔" E BOTÃO "✕" PARA CANCELAR -->
+                <div id="input-box-forte" class="hidden flex items-center gap-2 px-2">
+                  <input 
+                    type="text" 
+                    id="text-new-forte" 
+                    placeholder="Digite o novo ponto forte..." 
+                    class="flex-grow border border-emerald-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); confirmAddPoint('forte'); } else if(event.key === 'Escape'){ hideInputNewPoint('forte'); }"
+                  >
+                  <button type="button" onclick="confirmAddPoint('forte')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow-xs">
+                    ✔
+                  </button>
+                  <button type="button" onclick="hideInputNewPoint('forte')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-2.5 py-1.5 rounded-lg text-xs cursor-pointer" title="Cancelar">
+                    ✕
+                  </button>
+                </div>
+
+                <!-- LISTA DE PONTOS FORTES -->
+                <ul id="list-pontos-fortes" class="space-y-2 text-xs text-gray-700">
+                  <!-- Gerado via JS com botão X perfeitamente alinhado ao centro do botão + -->
+                </ul>
+              </div>
+
+              <!-- PONTOS DE ATENÇÃO -->
+              <div class="space-y-3">
+                <div class="flex items-center justify-between px-2">
+                  <span class="text-xs font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    PONTOS DE ATENÇÃO
+                  </span>
+                  <!-- BOTÃO "+" -->
+                  <button type="button" onclick="showInputNewPoint('atencao')" class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200 flex items-center justify-center font-bold text-sm transition cursor-pointer" title="Adicionar Ponto de Atenção">
+                    +
+                  </button>
+                </div>
+
+                <!-- CAMPO COM BOTÃO "✔" E BOTÃO "✕" PARA CANCELAR -->
+                <div id="input-box-atencao" class="hidden flex items-center gap-2 px-2">
+                  <input 
+                    type="text" 
+                    id="text-new-atencao" 
+                    placeholder="Digite o ponto de atenção..." 
+                    class="flex-grow border border-amber-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-amber-600"
+                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); confirmAddPoint('atencao'); } else if(event.key === 'Escape'){ hideInputNewPoint('atencao'); }"
+                  >
+                  <button type="button" onclick="confirmAddPoint('atencao')" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer shadow-xs">
+                    ✔
+                  </button>
+                  <button type="button" onclick="hideInputNewPoint('atencao')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-2.5 py-1.5 rounded-lg text-xs cursor-pointer" title="Cancelar">
+                    ✕
+                  </button>
+                </div>
+
+                <!-- LISTA DE PONTOS DE ATENÇÃO -->
+                <ul id="list-pontos-atencao" class="space-y-2 text-xs text-gray-700">
+                  <!-- Gerado via JS com botão X perfeitamente alinhado ao centro do botão + -->
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 6. HISTÓRICO DO IMÓVEL (TIMELINE COM BOTÃO "X") -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h4 class="text-xs font-bold uppercase text-gray-700 tracking-wider">Histórico do Imóvel</h4>
+                <p class="text-xs text-gray-500">Linha cronológica das etapas e rodadas de negociação</p>
+              </div>
+              <button type="button" onclick="showInputNewHistory()" class="bg-gray-100 hover:bg-gray-200 text-advestor-teal text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer">
+                <span>+ Adicionar Evento</span>
+              </button>
+            </div>
+
+            <div id="input-box-history" class="hidden bg-gray-50 p-3 rounded-xl border border-gray-200 space-y-2">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <input type="text" id="text-new-history-date" placeholder="DD/MM/AAAA" class="border rounded px-2.5 py-1 text-xs">
+                <input type="text" id="text-new-history-desc" placeholder="Descrição do evento..." class="sm:col-span-2 border rounded px-2.5 py-1 text-xs">
+              </div>
+              <div class="flex justify-end gap-2">
+                <button type="button" onclick="hideInputNewHistory()" class="text-xs text-gray-500 px-2 py-1">Cancelar</button>
+                <button type="button" onclick="confirmAddHistory()" class="bg-advestor-teal text-white text-xs font-bold px-3 py-1 rounded">Adicionar ✔</button>
+              </div>
+            </div>
+
+            <div id="list-historico" class="space-y-3">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+
+          <!-- 7. FICHA TÉCNICA (8 CAMPOS EDITÁVEIS + BOTÃO SALVAR DINÂMICO) -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h4 class="text-xs font-bold uppercase text-gray-700 tracking-wider">Ficha Técnica</h4>
+                <p class="text-xs text-gray-500">Defina os valores individuais de cada especificação técnica</p>
+              </div>
+              
+              <!-- BOTÃO SALVAR NA FICHA TÉCNICA (DINÂMICO) -->
+              <button 
+                type="button" 
+                id="btn-save-ficha"
+                onclick="submitPropertyForm()" 
+                class="btn-save-transition bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider flex items-center gap-1.5 transition cursor-pointer shadow-xs"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="btn-save-text">Salvar</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              
+              <!-- 1. ÁREA ÚTIL -->
+              <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                  ÁREA ÚTIL
+                </label>
+                <div class="flex items-center gap-1">
+                  <input type="text" id="card-area" oninput="syncCardArea(this.value); markFormDirty();" placeholder="26" class="w-full bg-white border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800">
+                  <span class="text-xs font-bold text-gray-500">m²</span>
+                </div>
+              </div>
+
+              <!-- 2. QUARTOS -->
+              <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                  QUARTOS
+                </label>
+                <input type="text" id="card-quartos" oninput="markFormDirty()" placeholder="1 Qto" class="w-full bg-white border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800">
+              </div>
+
+              <!-- 3. GARAGEM -->
+              <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                  GARAGEM
+                </label>
+                <input type="text" id="card-garagem" oninput="markFormDirty()" placeholder="Sem vaga" class="w-full bg-white border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800">
+              </div>
+
+              <!-- 4. ANDAR -->
+              <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1"/></svg>
+                  ANDAR
+                </label>
+                <input type="text" id="card-andar" oninput="markFormDirty()" placeholder="3º Andar" class="w-full bg-white border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800">
+              </div>
+
+              <!-- 5. POSIÇÃO -->
+              <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/></svg>
+                  POSIÇÃO
+                </label>
+                <input type="text" id="card-posicao" oninput="markFormDirty()" placeholder="Fundos" class="w-full bg-white border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800">
+              </div>
+
+              <!-- 6. CONDOMÍNIO -->
+              <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                  CONDOMÍNIO
+                </label>
+                <input type="text" id="card-condominio" oninput="maskCurrency(this); markFormDirty();" placeholder="R$ 650,00" class="w-full bg-white border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800">
+              </div>
+
+              <!-- 7. IPTU / ANO -->
+              <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  IPTU / ANO
+                </label>
+                <input type="text" id="card-iptu" oninput="maskCurrency(this); markFormDirty();" placeholder="R$ 1.200,00" class="w-full bg-white border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800">
+              </div>
+
+              <!-- 8. ANO DO PRÉDIO -->
+              <div class="bg-gray-50/80 p-3 rounded-xl border border-gray-200">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  ANO PRÉDIO
+                </label>
+                <input type="text" id="card-ano" oninput="markFormDirty()" placeholder="1965" class="w-full bg-white border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800">
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 8. DOCUMENTOS E CERTIDÕES (UPLOAD + DRAG & DROP + "X" DE EXCLUSÃO) -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div>
+                <h4 class="text-xs font-bold uppercase text-gray-700 tracking-wider flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-advestor-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <span>Documentos e Certidões</span>
+                </h4>
+                <p class="text-xs text-gray-500">Arquivos disponibilizados para download seguro do cliente</p>
+              </div>
+            </div>
+
+            <!-- ZONA DE ARRASTAR E SOLTAR (DRAG & DROP) + BOTÃO DE UPLOAD -->
+            <div 
+              id="drop-zone-docs" 
+              class="border-2 border-dashed border-gray-300 hover:border-advestor-teal rounded-2xl p-6 text-center bg-gray-50/50 transition cursor-pointer"
+              onclick="document.getElementById('input-doc-file').click()"
+            >
+              <svg class="w-8 h-8 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              <p class="text-xs font-bold text-gray-700">Arraste e solte arquivos aqui (PDF, DOCX, Imagens)</p>
+              <p class="text-[11px] text-gray-500 mt-1">ou clique para selecionar do seu computador</p>
+              <input type="file" id="input-doc-file" class="hidden" multiple onchange="handleDocFiles(event)">
+            </div>
+
+            <!-- LISTAGEM DOS DOCUMENTOS ANEXADOS COM BOTÃO "X" -->
+            <div id="list-documentos" class="space-y-2.5">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+
+          <!-- BARRA FIXA DE AÇÕES NO RODAPÉ DO FORMULÁRIO -->
+          <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+            <button type="button" onclick="closeModalProperty()" class="px-5 py-2.5 border border-gray-300 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 cursor-pointer">
+              Cancelar
+            </button>
+            <button 
+              type="submit" 
+              id="btn-save-footer"
+              class="btn-save-transition bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold px-8 py-2.5 rounded-xl text-xs uppercase tracking-wider flex items-center gap-2 transition cursor-pointer shadow-xs"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span class="btn-save-text">Salvar Alterações</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MINI-MODAL: NOVA PROPOSTA / ATUALIZAÇÃO DE PREÇO (COM Z-INDEX 70 EXPLÍCITO) -->
+  <div id="modal-offer" style="z-index: 70;" class="fixed inset-0 bg-black/60 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-gray-200">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-sm font-bold text-gray-900 flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Registrar Proposta no Histórico
+        </h3>
+        <button type="button" onclick="closeNewOfferModal()" class="text-gray-400 hover:text-gray-600 font-bold text-xl cursor-pointer">&times;</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Tipo de Evento</label>
+          <select id="offer-type" class="w-full border rounded-lg px-3 py-2 text-xs bg-white">
+            <option value="Proposta aceita">Proposta aceita</option>
+            <option value="Contraproposta enviada">Contraproposta enviada</option>
+            <option value="Proposta inicial enviada">Proposta inicial enviada</option>
+            <option value="Visita realizada">Visita realizada</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Novo Valor Negociado (R$)</label>
+          <input type="text" id="offer-amount" oninput="maskCurrency(this)" placeholder="R$ 365.000,00" class="w-full border rounded-lg px-3 py-2 text-xs font-bold text-emerald-800">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Data</label>
+          <input type="text" id="offer-date" placeholder="DD/MM/AAAA" class="w-full border rounded-lg px-3 py-2 text-xs font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Descrição que vai para o Histórico</label>
+          <textarea id="offer-desc" rows="2" placeholder="Vendedor aceitou a proposta formalizada de R$ 365.000." class="w-full border rounded-lg px-3 py-2 text-xs"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button type="button" onclick="closeNewOfferModal()" class="px-3 py-1.5 text-xs text-gray-600 border rounded-lg cursor-pointer">Cancelar</button>
+        <button type="button" onclick="confirmNewOffer()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs flex items-center gap-1 shadow-sm cursor-pointer">
+          <span>Confirmar ✔</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EXPORTAR JSON -->
+  <div id="modal-export" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-lg max-w-2xl w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-lg font-bold text-gray-900">JSON de Dados do Portal</h3>
+        <button onclick="closeExportModal()" class="text-gray-400 hover:text-gray-600 font-bold text-xl cursor-pointer">&times;</button>
+      </div>
+      <p class="text-xs text-gray-600">Copie o conteúdo abaixo para backup ou integração:</p>
+      <textarea id="json-output" rows="12" class="w-full bg-gray-50 border rounded p-3 font-mono text-xs text-gray-800 focus:outline-none" readonly></textarea>
+      <div class="flex justify-end gap-2">
+        <button onclick="copyJSON()" class="bg-advestor-copper hover:bg-advestor-copper-dark text-white px-4 py-2 rounded text-xs font-bold uppercase tracking-wider cursor-pointer">Copiar JSON</button>
+        <button onclick="closeExportModal()" class="bg-gray-200 text-gray-800 px-4 py-2 rounded text-xs font-bold cursor-pointer">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ INSTITUCIONAL -->
+  <footer class="bg-advestor-teal text-white text-xs pt-6 pb-6 border-t border-advestor-teal-dark mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 text-center space-y-2">
+      <p class="font-medium">Advestor Real Estate Solutions · Sistema de Gestão do Cliente</p>
+      <p class="text-gray-400">Av Rio Branco, 89 - Centro Rio de Janeiro - CEP: 20040-004</p>
+    </div>
+  </footer>
+
+  <!-- <script src="admin.js?v=align_perfect_v5"></script> -->
+  <script src="admin.js"></script>
+</body>
+</html>
