@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Advestor Importer",
+  "version": "3.0.0",
+  "description": "Extrator de dados imobiliários direto do DOM/HTML para o Painel Advestor.",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*.zapimoveis.com.br/*",
+    "*://*.vivareal.com.br/*",
+    "*://*.quintoandar.com.br/*",
+    "*://*.chavesnamao.com.br/*",
+    "*://*.imovelweb.com.br/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "externally_connectable": {
+    "matches": [
+      "*://127.0.0.1/*",
+      "*://localhost/*"
+    ]
+  }
+}
